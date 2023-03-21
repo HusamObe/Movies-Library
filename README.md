@@ -35,3 +35,37 @@
 retrieve a movie information from data.json
 inside the home page "/"    {movie title , movie poster , movie overview}
 inside the favorite page "/favorite"   {welcoming message}
+
+
+---------------------------------------------------------------------------------------------------------------------------
+
+
+
+# Movies-Library - V.1.1
+
+**Author Name**: Husam Hasan Obeidat
+
+## Overview
+
+## Getting Started
+
+1- /trending: Get the trending movies data from the Movie DB API (3rd party API) inside function trendingPageHandler.
+
+2- created a constructor Trending to reshape the data.
+
+3- /search: Search for a movie name to get its information using query from the Movie DB API (3rd party API) inside function searchHandler 
+
+4- created a constructor Movie to reshape the data .
+
+5- /popular: Get the Popular movies data from the Movie DB API (3rd party API) inside function popularHandler.
+
+6- created a constructor Popular to reshape data .
+
+7- /top-rated-tv-shows: Get the popular Tv-Shows from the Movie DB API (3rd party API) inside function tvShowsHandler.
+
+8- created a constructor TV to reshape data .
+
+## Project Features
+retrieve data from a 3rd party API Movie DB
+4 new routes 
+user now can search for a movie using query .

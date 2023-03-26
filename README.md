@@ -69,3 +69,23 @@ inside the favorite page "/favorite"   {welcoming message}
 retrieve data from a 3rd party API Movie DB
 4 new routes 
 user now can search for a movie using query .
+
+---------------------------------------------------------------------------------------------------------------------------
+
+
+
+# Movies-Library - V.1.2
+
+**Author Name**: Husam Hasan Obeidat
+
+## Overview
+
+## Getting Started
+
+1- /addMovie: Insert new movie information row {"title","Duration","Image"} inside function addMovieHandler() .
+
+2- /getMovies: Return all the movies from DataBase "movies" inside function getMoviesHandler().
+
+## Project Features
+now a client can add/view items from a DB called movies.
+![Client Server Cycle](./assets/movies%20DB%20screenShot.png "DB")

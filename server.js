@@ -5,12 +5,38 @@ const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 require('dotenv').config();
+const bodyParser = require('body-parser');
+const { Client } = require('pg');
+
+
 const app = express()
 const movieData = require('./Movie Data/data.json');
 const { json } = require('express');
 app.use(cors());
 const PORT = process.env.PORT;
-const apiKey = process.env.API_KEY
+const apiKey = process.env.API_KEY;
+const user = process.env.USER;
+const passW = process.env.PW;
+let DbURL = `postgres:${user}:${passW}@localhost:5432/movies_library`;
+const client = new Client(DbURL);
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
+//Routes
+app.get('/favorite', favoritePageHandler);
+app.get('/', homePageHandler);
+app.get('/trending', trendingPageHandler);
+app.get('/search', searchHandler);
+app.get('/popular', popularHandler);
+app.get('/top-rated-tv-shows', tvShowsHandler);
+app.post('/addMovie', addMovieHandler);
+app.get('/getMovies', getMoviesHandler);
+app.get('*', handleNotFoundErr);
+
 
 
 // creating a constructor for movies
@@ -47,15 +73,31 @@ function TV(name, originCountry, lang, vote, overview) {
 }
 
 
-app.get('/favorite', favoritePageHandler);
-app.get('/', homePageHandler);
-app.get('/trending', trendingPageHandler);
-app.get('/search', searchHandler);
-app.get('/popular', popularHandler);
-app.get('/top-rated-tv-shows', tvShowsHandler);
-app.get('*', handleNotFoundErr);
 
+function addMovieHandler(req, res) {
+    //console.log(req.body);
+    let { title, duration, image } = req.body;
+    let sql = `INSERT INTO movies (title,duration,image)
+    VALUES ($1,$2,$3) RETURNING *; `
+    let values = [title, duration, image];
+    client.query(sql, values)
+        .then((result) => {
+            res.json(result.rows);
+        }).catch((err) => {
+            console.log(err);
+        })
+}
 
+function getMoviesHandler(req, res) {
+    let sql = 'SELECT * FROM movies ;';
+    client.query(sql)
+        .then((result) => {
+            res.json(result.rows);
+        })
+        .catch((err) => {
+            console.log("error!!!", err);
+        })
+}
 
 function tvShowsHandler(req, res) {
     let url = `https://api.themoviedb.org/3/tv/top_rated?api_key=${apiKey}&language=en-US&page=1`;
@@ -151,6 +193,9 @@ app.use(function (err, req, res, next) {
 
 
 //run the server and make it listen all the time to port 3000
-app.listen(PORT, () => {
-    console.log(`the server is listening to port ${PORT}`);
-})
+client.connect().then(() => {
+    app.listen(PORT, () => {
+        console.log(`the server is listening to port ${PORT}`);
+    })
+
+}).catch()

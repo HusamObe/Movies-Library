@@ -15,9 +15,7 @@ const { json } = require('express');
 app.use(cors());
 const PORT = process.env.PORT;
 const apiKey = process.env.API_KEY;
-const user = process.env.USER;
-const passW = process.env.PW;
-let DbURL = `postgres:${user}:${passW}@localhost:5432/movies_library`;
+let DbURL = process.env.DB_URL;
 const client = new Client(DbURL);
 
 // parse application/x-www-form-urlencoded

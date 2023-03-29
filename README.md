@@ -89,3 +89,28 @@ user now can search for a movie using query .
 ## Project Features
 now a client can add/view items from a DB called movies.
 ![Client Server Cycle](./assets/movies%20DB%20screenShot.png "DB")
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+
+# Movies-Library - V.1.3
+
+**Author Name**: Husam Hasan Obeidat
+
+## Overview
+
+## WRRC
+![Client Server Cycle](./assets/cycle2.jpeg "cycle")
+
+## Getting Started
+
+1- /UPDATE/:id : update comments on a movie by id inside function updateHandler() .
+
+2- /DELETE/:id : deleteing movie from the database by id inside function deleteHandler().
+
+3- /getMovie/:id : display a movie with the given id from the dataBase inside function getMovieByIdHandler().
+
+## Project Features
+now a client can Update/Delete items from a DB called movies.

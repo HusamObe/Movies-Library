@@ -35,6 +35,9 @@ app.get('/popular', popularHandler);
 app.get('/top-rated-tv-shows', tvShowsHandler);
 app.post('/addMovie', addMovieHandler);
 app.get('/getMovies', getMoviesHandler);
+app.put('/UPDATE/:id', updateHandler);
+app.delete('/DELETE/:id', deleteHandler);
+app.get('/getMovie/:id', getMovieByIdHandler);
 app.get('*', handleNotFoundErr);
 
 
@@ -72,14 +75,56 @@ function TV(name, originCountry, lang, vote, overview) {
     this.overview = overview;
 }
 
+function updateHandler(req, res) {
+    let { id } = req.params;
 
+    let sql = `UPDATE movies SET comments = $1
+    WHERE id = $2 RETURNING * ;`;
+    let { comments } = req.body;
+    let values = [comments, id];
+    client.query(sql, values)
+        .then((result) => {
+            res.json(result.rows);
+        })
+        .catch((err) => {
+            res.send(err);
+        })
+}
+
+function deleteHandler(req, res) {
+    let { movieID } = req.params.id;
+    let sql = `DELETE FROM movies
+    WHERE id = $1 ;`
+    let value = [movieID];
+    client.query(sql, value)
+        .then(() => {
+            res.send("Movie has been deleted.")
+        })
+        .catch((err) => {
+            res.send(err);
+        })
+}
+
+function getMovieByIdHandler(req, res) {
+    let { id } = req.params;
+    let sql = `SELECT * FROM movies WHERE id = $1;`
+    let value = [id];
+    client.query(sql, value)
+        .then((result) => {
+            res.json(result.rows);
+        })
+        .catch((err) => {
+            res.send(err);
+        })
+}
 
 function addMovieHandler(req, res) {
     //console.log(req.body);
-    let { title, duration, image } = req.body;
-    let sql = `INSERT INTO movies (title,duration,image)
-    VALUES ($1,$2,$3) RETURNING *; `
-    let values = [title, duration, image];
+    let { id, title, duration, image, comments } = req.body;
+    let sql = `INSERT INTO movies (id,title,duration,image,comments)
+    VALUES ($1,$2,$3,$4,$5) RETURNING *; `
+    let values = [id, title, duration, image, comments];
+    console.log(sql, values);
     client.query(sql, values)
         .then((result) => {
             res.json(result.rows);
